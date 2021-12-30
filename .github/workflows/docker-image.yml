@@ -35,8 +35,8 @@ jobs:
 
     - name: Build the Docker image
       run: |
-           docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/gocqhttp:re
-           docker push ${{ secrets.DOCKER_USERNAME }}/gocqhttp:re
+           docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/gocqhttp
+           docker push ${{ secrets.DOCKER_USERNAME }}/gocqhttp
 
   del_runs:
     runs-on: ubuntu-latest
