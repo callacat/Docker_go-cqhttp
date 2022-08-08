@@ -3,9 +3,13 @@ FROM alpine:latest
 ENV TZ=Asia/Shanghai
 ENV LANG C.UTF-8
 
-ADD https://github.com/Mrs4s/go-cqhttp/releases/download/${latest_ver}/go-cqhttp_linux_amd64.tar.gz /tmp/go-cqhttp_linux_amd64.tar.gz
-RUN apk add --no-cache ffmpeg tzdata \
-    && cd /tmp && tar -zxvf go-cqhttp_linux_amd64.tar.gz \
+# ADD https://github.com/Mrs4s/go-cqhttp/releases/download/v1.0.0-rc3/go-cqhttp_linux_amd64.tar.gz /tmp/go-cqhttp_linux_amd64.tar.gz
+
+RUN cd /tmp \
+    && latest=$(wget -qO- -t1 -T2 https://api.github.com/repos/Mrs4s/go-cqhttp/releases/latest | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g') \
+    && wget -q https://github.com/Mrs4s/go-cqhttp/releases/download/$latest/go-cqhttp_linux_amd64.tar.gz \
+    && apk add --no-cache ffmpeg tzdata \
+    && tar -zxvf go-cqhttp_linux_amd64.tar.gz \
     && mv go-cqhttp /usr/bin/cqhttp && chmod +x /usr/bin/cqhttp \
     && rm /tmp/* \
     && cp /usr/share/zoneinfo/$TZ /etc/localtime

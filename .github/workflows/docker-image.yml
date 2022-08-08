@@ -35,6 +35,7 @@ jobs:
 
     - name: Build the Docker image
       run: |
+            
            docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/gocqhttp
            docker push ${{ secrets.DOCKER_USERNAME }}/gocqhttp
 
