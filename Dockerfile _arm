@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 ENV TZ=Asia/Shanghai \
-    LANG C.UTF-8
+    LANG=C.UTF-8
 
 RUN cd /tmp \
     && latest=$(wget -qO- -t1 -T2 https://api.github.com/repos/Mrs4s/go-cqhttp/releases/latest | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g') \
