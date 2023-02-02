@@ -73,7 +73,6 @@ jobs:
     #       --os linux --arch amd64
 
     - name: 更新latest镜像清单
-      if: ${{ steps.newTimeStamp.outputs.first_match != steps.lastTimeStamp.outputs.first_match }}
       run: docker manifest push ${{ secrets.DOCKER_USERNAME }}/gocqhttp
 
     # - name: 推送latest列表
