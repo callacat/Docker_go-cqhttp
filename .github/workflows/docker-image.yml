@@ -59,11 +59,11 @@ jobs:
         tags: |
             dswang2233/gocqhttp:arm64
 
-    # - name: 创建latest列表
-    #   run: |
-    #     docker manifest create dswang2233/gocqhttp \
-    #       dswang2233/gocqhttp:amd64 \
-    #       dswang2233/gocqhttp:arm64
+    - name: 创建latest列表
+      run: |
+        docker manifest create dswang2233/gocqhttp \
+          dswang2233/gocqhttp:amd64 \
+          dswang2233/gocqhttp:arm64
         
     # - name: 设置latest列表
     #   run: |
