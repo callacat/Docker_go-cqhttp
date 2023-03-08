@@ -16,7 +16,7 @@ RUN if [ "$(apk --print-arch)" = "x86_64" ]; then \
         exit 1; \
     fi \
     && echo $MYARCH \
-    && apk add --no-cache tzdata ffmpeg \
+    && apk add --no-cache tzdata ffmpeg curl \
     && latest=$(wget -qO- -t1 -T2 https://api.github.com/repos/Mrs4s/go-cqhttp/releases/latest | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g') \
     && curl -L https://github.com/Mrs4s/go-cqhttp/releases/download/$latest/go-cqhttp_linux_$MYARCH.tar.gz -O go-cqhttp.tar.gz \
     && tar -zxvf go-cqhttp.tar.gz -C /usr/bin/ cqhttp --strip-components=1 \
