@@ -23,6 +23,4 @@ RUN if [ "$(apk --print-arch)" = "x86_64" ]; then \
     && mv go-cqhttp_linux_$MYARCH /usr/bin/cqhttp \
     && cp /usr/share/zoneinfo/$TZ /etc/localtime
 
-WORKDIR /data
-
 ENTRYPOINT [ "/usr/bin/cqhttp" ]

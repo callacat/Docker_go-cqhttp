@@ -1,6 +1,6 @@
 #!/bin/sh
-LATEST_WORKFLOW_URL=$(curl -s "https://github.com/Mrs4s/go-cqhttp/actions/workflows/ci.yml" | grep -oP 'https://github.com/Mrs4s/go-cqhttp/actions/runs/\d+' | head -n 1)
-ARTIFACTS_URLS=$(curl -s "${LATEST_WORKFLOW_URL}" | grep -Eo "https://.*?/artifacts/.*?/download" | sed "s/\\\\\//\//g")
+LATEST_WORKFLOW_URL=$(curl -s "https://github.com/Mrs4s/go-cqhttp/actions/workflows/ci.yml" | sed -n 's/.*href="\([^"]\+\)class="[^"]\+"\>[^\x00-\x7F]\?Download Artifacts.*/\1/p' | head -n 1)
+ARTIFACTS_URLS=$(curl -s "${LATEST_WORKFLOW_URL}" | sed -n 's/.*href="\([^"]\+\)".*'"${ARTIFACT_FILTER}"'.*/\1/p')
 
 if [ -n "${ARTIFACTS_URLS}" ]; then
   for url in ${ARTIFACTS_URLS}; do
