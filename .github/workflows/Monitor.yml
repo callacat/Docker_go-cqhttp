@@ -5,7 +5,7 @@ on:
   #   paths:
   #     - '.github/workflows/Monitor.yml'
   schedule:
-    - cron: '12 6 * * 1'   # 每6小时执行一次
+    - cron: '12 6 * * 1'   # 每星期一执行一次
 
 jobs:
   monitor:

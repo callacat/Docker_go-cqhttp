@@ -5,8 +5,8 @@ on:
     paths:
       - '.github/workflows/docker-imag-dev.yml'
       - 'Dockerfile-dev'
-  repository_dispatch:
-    types: [docker-build-dev]
+  schedule:
+    - cron: '12 6 * * *'  #每天一次
 
 jobs:
 
