@@ -32,11 +32,7 @@ jobs:
 
     - name: getDev
       run: |
-        curl \
-        -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-        -H "Accept: application/vnd.github.v3+json" \
-        -LJO "https://github.com/Mrs4s/go-cqhttp/suites/11485638823/artifacts/593187465"
-        ls -R
+        ./getDev.sh
 
     # - name: Login to DockerHub
     #   uses: docker/login-action@v2
@@ -48,7 +44,7 @@ jobs:
     #   uses: docker/build-push-action@v4
     #   with:
     #     context: .
-    #     file: ./Dockerfile-dev
+    #     file: ./Dockerfile-dev000000000000
     #     platforms: linux/amd64,linux/arm64
     #     push: true
     #     tags: |

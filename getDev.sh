@@ -1,13 +1,17 @@
-mkdir -p download
-while read -r url; do
-  echo "下载文件：$url"
-  final_url=$(curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.69" -L -s -o /dev/null -w '%{url_effective}' $url)
-  wget -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.69" "$final_url" -P ./download/
-done < devUrl.txt
+#!/bin/bash
 
-find ./download -iname "*.zip" -print0 | while read -d $'\0' file
-do
-  unzip -q "$file" -d "${file%.*}" && rm -f "$file"
+# 从文件中读取链接到数组
+mapfile -t links < devUrl.txt
+
+# 循环下载所有链接中的文件
+for link in "${links[@]}"; do
+    name=$(basename "$link")
+    curl \
+        -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+        -H "Accept: application/vnd.github.v3+json" \
+        -L "$link" \
+        -o "download/$name.zip"
 done
 
-ls ./download/
+# 输出 download 目录下的所有文件
+ls -l download/
