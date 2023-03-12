@@ -4,8 +4,8 @@ on:
   push:
     paths:
       - '.github\workflows\docker-image-dev.yml'
-      - 'Dockerfile-dev'
-      - 'devUrl.txt'
+      # - 'Dockerfile-dev'
+      # - 'devUrl.txt'
 
   # schedule:
   #   - cron: '12 3 * * *'  #每天一次
