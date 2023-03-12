@@ -3,7 +3,7 @@ FROM alpine:latest
 ENV TZ=Asia/Shanghai \
     LANG=C.UTF-8
 
-COPY artifacts /tmp/artifacts
+COPY download /tmp/download/
 
 RUN if [ "$(apk --print-arch)" = "x86_64" ]; then \
         MYARCH="amd64"; \
@@ -19,7 +19,7 @@ RUN if [ "$(apk --print-arch)" = "x86_64" ]; then \
     fi \
     && echo $MYARCH \
     && apk add --no-cache tzdata ffmpeg && cd /tmp \
-    && mv artifacts/go-cqhttp_linux_$MYARCH /usr/bin/cqhttp \
+    && mv download/go-cqhttp_linux_$MYARCH /usr/bin/cqhttp \
     && cp /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone
 
