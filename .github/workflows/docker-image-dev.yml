@@ -2,8 +2,8 @@ name: Docker-Build-dev
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
     paths:
       - '.github\workflows\docker-image-dev.yml'
       - 'Dockerfile-dev'
@@ -39,12 +39,10 @@ jobs:
           final_url=$(curl -sLo /dev/null -w '%{url_effective}' $url)
           wget "$final_url" -P ./download/
         done < devUrl.txt
-
         find ./download -iname "*.zip" -print0 | while read -d $'\0' file
         do
           unzip -q "$file" -d "${file%.*}" && rm -f "$file"
         done
-
         ls ./download/
 
     - name: Login to DockerHub
