@@ -7,8 +7,8 @@ on:
       - 'Dockerfile-dev'
       - 'devUrl.txt'
 
-  schedule:
-    - cron: '12 3 * * *'  #每天一次
+  # schedule:
+  #   - cron: '12 3 * * *'  #每天一次
 
 jobs:
 
