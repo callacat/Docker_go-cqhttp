@@ -42,10 +42,10 @@ jobs:
         if [ -n "${ARTIFACTS_URLS}" ]; then
           for url in ${ARTIFACTS_URLS}; do
             filename=$(echo "${url}" | awk -F/ '{print $(NF-1)}')
-            mkdir -p artifacts # 确保 artifacts 目录存在
-            curl -L -o "artifacts/${filename}.zip" "${url}" # 下载 Artifact
+            mkdir -p artifacts
+            curl -L -o "artifacts/${filename}.zip" "${url}"
             unzip -o "artifacts/${filename}.zip" -d "artifacts/${filename}" # 解压 Artifact
-            rm -f "artifacts/${filename}.zip" # 清理 Artifact 压缩包
+            rm -f "artifacts/${filename}.zip"
             echo "url=true" >> GITHUB_OUTPUT
           done
         else
