@@ -37,19 +37,18 @@ jobs:
         LATEST_RUN_URL=$(curl -s 'https://api.github.com/repos/Mrs4s/go-cqhttp/actions/workflows/ci.yml/runs' | jq -r '.workflow_runs[0].html_url')
         echo $LATEST_RUN_URL
 
-        ARTIFACTS_URLS=$(curl -s "${LATEST_RUN_URL}" | jq -r '.artifacts[] | select(.archive_download_url) | "https://github.com/\(.archive_download_url)"')
-        echo $ARTIFACTS_URLS
+        ARTIFACTS=$(curl -s "${LATEST_RUN_URL}" | jq '.artifacts[] | select(.archive_download_url)')
+        echo $ARTIFACTS
 
         if [ -n "${ARTIFACTS_URLS}" ]; then
-          for url in ${ARTIFACTS_URLS}; do
-            filename=$(echo "${url}" | awk -F/ '{print $(NF-1)}')
-            mkdir -p artifacts
-            curl -L -o "artifacts/${filename}.zip" "${url}"
-            unzip -o "artifacts/${filename}.zip" -d "artifacts/${filename}"
-            rm -f "artifacts/${filename}.zip"
-            ls artifacts/
-            echo "url=true" >> GITHUB_OUTPUT
-          done
+          for artifact in ${ARTIFACTS}; do
+          URL=$(echo "${artifact}" | jq -r '.archive_download_url')
+          FILENAME=$(echo "${artifact}" | jq -r '.name')
+          DOWNLOAD_URL="https://api.github.com${URL}"
+          DOWNLOAD_LINK=$(curl -s --header "Authorization: Bearer ${{secrets.github}}" --header 'Accept: application/octet-stream' "${DOWNLOAD_URL}" | jq -r '.url')
+          curl -sL --header "Authorization: Bearer ${{secrets.github}}" --header 'Accept: application/octet-stream' "${DOWNLOAD_LINK}" -o "${FILENAME}.zip"
+          echo "url=true" >> GITHUB_OUTPUT
+        done
         else
           echo "No Artifacts URLs found." >&2
           echo "url=false" >> GITHUB_OUTPUT
