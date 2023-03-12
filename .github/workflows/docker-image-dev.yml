@@ -2,9 +2,9 @@ name: Docker-Build-dev
 
 on:
   push:
-    paths:
-      - '.github\workflows\docker-image-dev.yml'
-      - 'Dockerfile-dev'
+    # paths:
+    #   - '.github\workflows\docker-image-dev.yml'
+    #   - 'Dockerfile-dev'
     branches:
       - main
   schedule:
