@@ -1,2 +1,2 @@
-https://github.com/Mrs4s/go-cqhttp/suites/11485638823/artifacts/593187465
-https://github.com/Mrs4s/go-cqhttp/suites/11485638823/artifacts/593187467
+https://pipelines.actions.githubusercontent.com/serviceHosts/a535041d-2e98-4ad7-9265-681e2cf2995a/_apis/pipelines/1/runs/3614/signedartifactscontent?artifactName=linux_amd64&urlExpires=2023-03-12T15%3A04%3A16.6982995Z&urlSigningMethod=HMACV2&urlSignature=t%2FFQYO8kdw1Sf4BuF1weuRRKsMG9rmes1LObQd4C1r8%3D
+https://pipelines.actions.githubusercontent.com/serviceHosts/a535041d-2e98-4ad7-9265-681e2cf2995a/_apis/pipelines/1/runs/3614/signedartifactscontent?artifactName=linux_arm64&urlExpires=2023-03-12T15%3A04%3A29.2780203Z&urlSigningMethod=HMACV2&urlSignature=O4oI4y7opBdmuQpI8W%2B2kMaZQqmqRdJrlZRqn4oK79E%3D
