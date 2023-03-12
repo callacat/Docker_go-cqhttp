@@ -1,11 +1,11 @@
 #!/bin/bash
 # 获取最新 GitHub Actions 运行链接
 LATEST_RUN_URL=$(curl -s https://github.com/Mrs4s/go-cqhttp/actions/ | grep -o -E '/Mrs4s/go-cqhttp/actions/runs/[0-9]+' | head -n 1)
-
+echo $LATEST_RUN_URL
 # 根据运行链接获取 Artifacts 下载链接
 ARTIFACT_FILTER='/artifacts/[0-9]+'
 ARTIFACTS_URLS=$(curl -s "${LATEST_RUN_URL}" | grep -o -E 'https://github.com/Mrs4s/go-cqhttp/suites/[0-9]+/artifacts/[0-9]+' | grep -E "${ARTIFACT_FILTER}")
-
+echo $ARTIFACTS_URLS
 # 判断是否获取到了 Artifacts 下载链接
 if [ -n "${ARTIFACTS_URLS}" ]; then
   # 如果获取到了下载链接，则遍历链接列表进行下载和解压
