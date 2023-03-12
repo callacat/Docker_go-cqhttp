@@ -22,6 +22,6 @@ RUN if [ "$(apk --print-arch)" = "x86_64" ]; then \
     && mv download/go-cqhttp_linux_$MYARCH /usr/bin/cqhttp \
     && cp /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
-    && rm /tmp/*
+    && rm -rf /tmp/* /var/cache/apk/*
 
 ENTRYPOINT [ "/usr/bin/cqhttp" ]
