@@ -40,7 +40,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: .
-        file: ./Dockerfile-dev000000000000
+        file: ./Dockerfile-dev
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
