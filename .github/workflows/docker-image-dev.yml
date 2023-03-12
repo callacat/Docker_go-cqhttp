@@ -3,11 +3,9 @@ name: Docker-Build-dev
 on:
   push:
     paths:
-      - '.github\workflows\docker-image-dev.yml'
+      - '.github/workflows/docker-image-dev.yml'
       - 'Dockerfile-dev'
       - 'download/*'
-    # branches:
-    #   - main
   schedule:
     - cron: '12 3 * * *'  #每天一次
 
