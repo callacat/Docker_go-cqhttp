@@ -16,9 +16,11 @@ if [ -n "${ARTIFACTS_URLS}" ]; then
     curl -L -o "artifacts/${filename}.zip" "${url}" # 下载 Artifact
     unzip -o "artifacts/${filename}.zip" -d "artifacts/${filename}" # 解压 Artifact
     rm -f "artifacts/${filename}.zip" # 清理 Artifact 压缩包
+    echo "url=true" >> GITHUB_OUTPUT
   done
 else
   # 如果没有获取到下载链接，则输出错误信息并退出脚本
   echo "No Artifacts URLs found." >&2
+  echo "url=false" >> GITHUB_OUTPUT
   exit 1
 fi

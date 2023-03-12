@@ -32,27 +32,7 @@ jobs:
     - name: getDev
       id: dev
       run: |
-        LATEST_RUN_URL=$(curl -s https://github.com/Mrs4s/go-cqhttp/actions/workflows/ci.yml | grep -o -E 'https://github.com/Mrs4s/go-cqhttp/actions/runs/[0-9]+' | head -n 1)
-        echo $LATEST_RUN_URL
-
-        ARTIFACT_FILTER='/artifacts/[0-9]+'
-        ARTIFACTS_URLS=$(curl -s "${LATEST_RUN_URL}" | grep -o -E 'https://github.com/Mrs4s/go-cqhttp/suites/[0-9]+/artifacts/[0-9]+' | grep -E "${ARTIFACT_FILTER}")
-        echo $ARTIFACTS_URLS
-
-        if [ -n "${ARTIFACTS_URLS}" ]; then
-          for url in ${ARTIFACTS_URLS}; do
-            filename=$(echo "${url}" | awk -F/ '{print $(NF-1)}')
-            mkdir -p artifacts
-            curl -L -o "artifacts/${filename}.zip" "${url}"
-            unzip -o "artifacts/${filename}.zip" -d "artifacts/${filename}" # 解压 Artifact
-            rm -f "artifacts/${filename}.zip"
-            echo "url=true" >> GITHUB_OUTPUT
-          done
-        else
-          echo "No Artifacts URLs found." >&2
-          echo "url=false" >> GITHUB_OUTPUT
-          exit 1
-        fi 
+        bash getDev.sh
 
     - name: Login to DockerHub
       if: ${{ steps.dev.outputs.url == 'true' }}
