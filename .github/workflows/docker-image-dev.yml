@@ -33,10 +33,11 @@ jobs:
     - name: getDev
       id: dev
       run: |
-        LATEST_RUN_URL=$(curl -s https://github.com/Mrs4s/go-cqhttp/actions/workflows/ci.yml | grep -o -E 'https://github.com/Mrs4s/go-cqhttp/actions/runs/[0-9]+' | head -n 1)
+        sudo apt-get install jq -y
+        LATEST_RUN_URL=$(curl -s 'https://api.github.com/repos/Mrs4s/go-cqhttp/actions/workflows/ci.yml/runs' | jq -r '.workflow_runs[0].html_url')
         echo $LATEST_RUN_URL
 
-        ARTIFACTS_URLS=$(curl -s "${LATEST_RUN_URL}" | grep -o -E 'https://github.com/Mrs4s/go-cqhttp/suites/[0-9]+/artifacts/[0-9]+' | sort -u)
+        ARTIFACTS_URLS=$(curl -s "${LATEST_RUN_URL}" | jq -r '.artifacts[] | "https://github.com/\(.archive_download_url)"')
         echo $ARTIFACTS_URLS
 
         if [ -n "${ARTIFACTS_URLS}" ]; then
