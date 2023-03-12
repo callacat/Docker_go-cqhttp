@@ -2,12 +2,12 @@ name: Docker-Build-dev
 
 on:
   push:
-    # paths:
-    #   - '.github\workflows\docker-image-dev.yml'
-    #   - 'Dockerfile-dev'
-    #   - 'devUrl.txt'
-    branches:
-      - main
+    paths:
+      - '.github\workflows\docker-image-dev.yml'
+      - 'Dockerfile-dev'
+      - 'download/*'
+    # branches:
+    #   - main
   schedule:
     - cron: '12 3 * * *'  #每天一次
 
@@ -30,31 +30,18 @@ jobs:
     - name: Available platforms
       run: echo ${{ steps.buildx.outputs.platforms }}
 
-    - name: getDev
-      run: |
-        mapfile -t links < devUrl.txt
-        for link in "${links[@]}"; do
-            name=$(basename "$link")
-            curl \
-                -H "Authorization: Bearer ${{ secrets.PAT }}" \
-                -H "Accept: application/vnd.github.v3+json" \
-                -L "$link" \
-                -o "download/$name.zip"
-        done
-        ls -l download/
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    # - name: Login to DockerHub
-    #   uses: docker/login-action@v2
-    #   with:
-    #     username: ${{ secrets.DOCKER_USERNAME }}
-    #     password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    # - name: Build and push
-    #   uses: docker/build-push-action@v4
-    #   with:
-    #     context: .
-    #     file: ./Dockerfile-dev000000000000
-    #     platforms: linux/amd64,linux/arm64
-    #     push: true
-    #     tags: |
-    #         ${{ secrets.DOCKER_USERNAME }}/gocqhttp:dev
+    - name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile-dev000000000000
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: |
+            ${{ secrets.DOCKER_USERNAME }}/gocqhttp:dev
