@@ -32,17 +32,8 @@ jobs:
 
     - name: getDev
       run: |
-        mkdir -p download
-        while read -r url; do
-          echo "下载文件：$url"
-          final_url=$(curl -sLo /dev/null -w '%{url_effective}' $url)
-          wget "$final_url" -P ./download/
-        done < devUrl.txt
-        find ./download -iname "*.zip" -print0 | while read -d $'\0' file
-        do
-          unzip -q "$file" -d "${file%.*}" && rm -f "$file"
-        done
-        ls ./download/
+        chmod +x getDev.sh
+        ./getDev.sh
 
     - name: Login to DockerHub
       uses: docker/login-action@v2
