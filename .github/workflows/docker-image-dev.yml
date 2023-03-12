@@ -36,7 +36,7 @@ jobs:
         -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
         -H "Accept: application/vnd.github.v3+json" \
         -LJO "https://api.github.com/repos/Mrs4s/go-cqhttp/actions/runs/4386962723/artifacts"
-        ls artifacts
+        ls artifacts/
 
     # - name: Login to DockerHub
     #   uses: docker/login-action@v2
