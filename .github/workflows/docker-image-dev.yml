@@ -5,8 +5,8 @@ on:
     paths:
       - '.github\workflows\docker-image-dev.yml'
       - 'Dockerfile-dev'
-  # branches:
-  #   - main
+    branches:
+      - main
   schedule:
     - cron: '12 3 * * *'  #每天一次
 
