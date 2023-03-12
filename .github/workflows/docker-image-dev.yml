@@ -32,7 +32,8 @@ jobs:
 
     - name: getDev
       run: |
-        ./getDev.sh
+        chmod +x getDev.sh
+        bash ./getDev.sh
 
     # - name: Login to DockerHub
     #   uses: docker/login-action@v2
