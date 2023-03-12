@@ -37,8 +37,10 @@ jobs:
         LATEST_RUN_URL=$(curl -s 'https://api.github.com/repos/Mrs4s/go-cqhttp/actions/workflows/ci.yml/runs' | jq -r '.workflow_runs[0].html_url')
         echo $LATEST_RUN_URL
 
-        ARTIFACTS=$(curl -s "${LATEST_RUN_URL}" | jq '.artifacts[] | select(.archive_download_url)')
+        ARTIFACTS=$(curl -s "${LATEST_RUN_URL}" | grep -Po 'href="/.*?/artifacts/[0-9]+')
         echo $ARTIFACTS
+        ARTIFACTS_URLS=$(echo "${ARTIFACTS}" | sed 's/href="\/\(.*\)/https:\/\/github.com\/\1/g')
+        echo $ARTIFACTS_URLS
 
         if [ -n "${ARTIFACTS_URLS}" ]; then
           for artifact in ${ARTIFACTS}; do
