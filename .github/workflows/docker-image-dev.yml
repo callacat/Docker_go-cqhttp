@@ -39,8 +39,7 @@ jobs:
         echo $ARTIFACTS_URLS
 
         if [ -n "${ARTIFACTS_URLS}" ]; then
-
-          for url in ${ARTIFACTS_URLS}; do.3
+          for url in ${ARTIFACTS_URLS}; do
             filename=$(echo "${url}" | awk -F/ '{print $(NF-1)}')
             mkdir -p artifacts
             curl -L -o "artifacts/${filename}.zip" "${url}"
