@@ -2,13 +2,14 @@ name: Docker-Build-dev
 
 on:
   push:
-    paths:
-      - '.github\workflows\docker-image-dev.yml'
-      # - 'Dockerfile-dev'
-      # - 'devUrl.txt'
-
-  # schedule:
-  #   - cron: '12 3 * * *'  #每天一次
+    # paths:
+    #   - '.github\workflows\docker-image-dev.yml'
+    #   - 'Dockerfile-dev'
+    #   - 'devUrl.txt'
+    branches:
+      - main
+  schedule:
+    - cron: '12 3 * * *'  #每天一次
 
 jobs:
 
