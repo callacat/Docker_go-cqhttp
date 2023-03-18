@@ -1,10 +1,10 @@
 name: Docker-Build
 
 on:
-  # push:
-  #   paths:
-  #     - '.github/workflows/docker-image.yml'
-  #     - 'Dockerfile'
+  push:
+    paths:
+      - '.github/workflows/docker-image.yml'
+      - 'Dockerfile'
   repository_dispatch:
     types: [docker-build]
 
