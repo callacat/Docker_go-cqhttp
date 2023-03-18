@@ -6,8 +6,8 @@ on:
       - '.github/workflows/docker-image-dev.yml'
       - 'Dockerfile-dev'
       - 'download/*'
-  schedule:
-    - cron: '12 3 * * *'  #每天一次
+#   schedule:
+#     - cron: '12 3 * * *'  #每天一次
 
 jobs:
 
