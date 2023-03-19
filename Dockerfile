@@ -18,12 +18,11 @@ RUN if [ "$(apk --print-arch)" = "x86_64" ]; then \
     && echo $MYARCH \
     && apk add --no-cache tzdata ffmpeg && cd /tmp \
     && latest=$(wget -qO- -t1 -T2 https://api.github.com/repos/Mrs4s/go-cqhttp/releases/latest | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g') \
-    && echo $latest \
-    && wget https://github.com/Mrs4s/go-cqhttp/releases/download/$latest/go-cqhttp_linux_$MYARCH.tar.gz -O go-cqhttp.tar.gz \
+    && wget -q https://github.com/Mrs4s/go-cqhttp/releases/download/$latest/go-cqhttp_linux_$MYARCH.tar.gz -O go-cqhttp.tar.gz \
     && tar -zxvf go-cqhttp.tar.gz \
     && mv go-cqhttp /usr/bin/cqhttp \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-WORKDIR /data
+VOLUME /data
 
 ENTRYPOINT [ "/usr/bin/cqhttp" ]
