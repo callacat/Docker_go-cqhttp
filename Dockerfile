@@ -3,6 +3,8 @@ FROM alpine:latest
 ENV TZ=Asia/Shanghai \
     LANG=C.UTF-8
 
+WORKDIR /data
+
 RUN if [ "$(apk --print-arch)" = "x86_64" ]; then \
         MYARCH="amd64"; \
     elif [ "$(apk --print-arch)" = "aarch64" ]; then \
@@ -22,7 +24,5 @@ RUN if [ "$(apk --print-arch)" = "x86_64" ]; then \
     && tar -zxvf go-cqhttp.tar.gz \
     && mv go-cqhttp /usr/bin/cqhttp \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-
-VOLUME /data
 
 ENTRYPOINT [ "/usr/bin/cqhttp" ]
