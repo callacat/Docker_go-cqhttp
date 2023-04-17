@@ -6,6 +6,7 @@ on:
       - '.github/workflows/Monitor.yml'
   schedule:
     - cron: '12 6 */3 * *'   # 每3天执行一次
+  workflow_dispatch:
 
 jobs:
   monitor:
