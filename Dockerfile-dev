@@ -1,4 +1,4 @@
-FROM golang:1.20-alpine AS builder
+FROM golang:alpine AS builder
 
 RUN go env -w GO111MODULE=auto \
   && go env -w CGO_ENABLED=0
@@ -6,9 +6,9 @@ RUN go env -w GO111MODULE=auto \
 WORKDIR /build
 
 RUN git clone https://github.com/Mrs4s/go-cqhttp.git \
-    && mv go-cqhttp . \
+    && cd go-cqhttp \
     && set -ex \
-    && go build -ldflags "-s -w -extldflags '-static'" -o cqhttp
+    && go build -ldflags "-s -w -extldflags '-static'" -o /build/cqhttp
 
 FROM alpine:latest
 
