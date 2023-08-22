@@ -1,28 +1,45 @@
+FROM golang:alpine AS builder
+
+RUN go env -w GO111MODULE=auto \
+  && go env -w CGO_ENABLED=0
+
+WORKDIR /build
+
+RUN apk add --no-cache git \
+    && git clone https://github.com/Mrs4s/go-cqhttp.git \
+    && cd go-cqhttp \
+    && set -ex \
+    && go build -ldflags "-s -w -extldflags '-static'" -o /build/cqhttp
+
 FROM alpine:latest
 
-ENV TZ=Asia/Shanghai \
-    LANG=C.UTF-8
+COPY --from=builder /build/go-cqhttp/docker-entrypoint.sh /docker-entrypoint.sh
+
+RUN chmod +x /docker-entrypoint.sh && \
+    apk add --no-cache --update \
+      ffmpeg \
+      coreutils \
+      shadow \
+      su-exec \
+      tzdata && \
+    rm -rf /var/cache/apk/* && \
+    mkdir -p /app && \
+    mkdir -p /data && \
+    mkdir -p /config && \
+    useradd -d /config -s /bin/sh abc && \
+    chown -R abc /config && \
+    chown -R abc /data
+
+ENV TZ="Asia/Shanghai"
+ENV UID=99
+ENV GID=100
+ENV UMASK=002
+
+COPY --from=builder /build/cqhttp /usr/bin/
 
 WORKDIR /data
 
-RUN if [ "$(apk --print-arch)" = "x86_64" ]; then \
-        MYARCH="amd64"; \
-    elif [ "$(apk --print-arch)" = "aarch64" ]; then \
-        MYARCH="arm64"; \
-    elif [ "$(apk --print-arch)" = "armhf" ]; then \
-        MYARCH="armv7"; \
-    elif [ "$(apk --print-arch)" = "i386" ]; then \
-        MYARCH="386"; \
-    else \
-        echo "Unknown architecture"; \
-        exit 1; \
-    fi \
-    && echo $MYARCH \
-    && apk add --no-cache tzdata ffmpeg && cd /tmp \
-    && latest=$(wget -qO- -t1 -T2 https://api.github.com/repos/Mrs4s/go-cqhttp/releases/latest | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g') \
-    && wget -q https://github.com/Mrs4s/go-cqhttp/releases/download/$latest/go-cqhttp_linux_$MYARCH.tar.gz -O go-cqhttp.tar.gz \
-    && tar -zxvf go-cqhttp.tar.gz \
-    && mv go-cqhttp /usr/bin/cqhttp \
-    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+VOLUME [ "/data" ]
 
-ENTRYPOINT [ "/usr/bin/cqhttp" ]
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+CMD [ "/usr/bin/cqhttp" ]
