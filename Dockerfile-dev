@@ -5,7 +5,8 @@ RUN go env -w GO111MODULE=auto \
 
 WORKDIR /build
 
-RUN git clone https://github.com/Mrs4s/go-cqhttp.git \
+RUN apk add --no-cache git \
+    && git clone https://github.com/Mrs4s/go-cqhttp.git \
     && cd go-cqhttp \
     && set -ex \
     && go build -ldflags "-s -w -extldflags '-static'" -o /build/cqhttp
