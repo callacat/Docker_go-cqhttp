@@ -13,7 +13,7 @@ RUN apk add --no-cache git \
 
 FROM alpine:latest
 
-COPY --from=builder /build/go-cqhttp/docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN chmod +x /docker-entrypoint.sh && \
     apk add --no-cache --update \
