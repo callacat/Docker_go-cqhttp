@@ -1,28 +1,44 @@
+FROM golang:1.20-alpine AS builder
+
+RUN go env -w GO111MODULE=auto \
+  && go env -w CGO_ENABLED=0
+
+WORKDIR /build
+
+RUN git clone https://github.com/Mrs4s/go-cqhttp.git \
+    && mv go-cqhttp . \
+    && set -ex \
+    && go build -ldflags "-s -w -extldflags '-static'" -o cqhttp
+
 FROM alpine:latest
 
-ENV TZ=Asia/Shanghai \
-    LANG=C.UTF-8
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
-COPY download /tmp/download/
+RUN chmod +x /docker-entrypoint.sh && \
+    apk add --no-cache --update \
+      ffmpeg \
+      coreutils \
+      shadow \
+      su-exec \
+      tzdata && \
+    rm -rf /var/cache/apk/* && \
+    mkdir -p /app && \
+    mkdir -p /data && \
+    mkdir -p /config && \
+    useradd -d /config -s /bin/sh abc && \
+    chown -R abc /config && \
+    chown -R abc /data
 
-RUN if [ "$(apk --print-arch)" = "x86_64" ]; then \
-        MYARCH="amd64"; \
-    elif [ "$(apk --print-arch)" = "aarch64" ]; then \
-        MYARCH="arm64"; \
-    elif [ "$(apk --print-arch)" = "armhf" ]; then \
-        MYARCH="armv7"; \
-    elif [ "$(apk --print-arch)" = "i386" ]; then \
-        MYARCH="386"; \
-    else \
-        echo "Unknown architecture"; \
-        exit 1; \
-    fi \
-    && echo $MYARCH \
-    && apk add --no-cache tzdata ffmpeg && cd /tmp \
-    && mv download/go-cqhttp_linux_$MYARCH /usr/bin/cqhttp \
-    && cp /usr/share/zoneinfo/$TZ /etc/localtime \
-    && chmod +x /usr/bin/cqhttp \
-    && echo $TZ > /etc/timezone \
-    && rm -rf /tmp/* /var/cache/apk/*
+ENV TZ="Asia/Shanghai"
+ENV UID=99
+ENV GID=100
+ENV UMASK=002
 
-ENTRYPOINT [ "/usr/bin/cqhttp" ]
+COPY --from=builder /build/cqhttp /app/
+
+WORKDIR /data
+
+VOLUME [ "/data" ]
+
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+CMD [ "/app/cqhttp" ]
