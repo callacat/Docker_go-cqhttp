@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.18.3
 
 ENV TZ=Asia/Shanghai \
     LANG=C.UTF-8
