@@ -35,11 +35,11 @@ ENV UID=99
 ENV GID=100
 ENV UMASK=002
 
-COPY --from=builder /build/cqhttp /app/
+COPY --from=builder /build/cqhttp /usr/bin/
 
 WORKDIR /data
 
 VOLUME [ "/data" ]
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
-CMD [ "/app/cqhttp" ]
+CMD [ "/usr/bin/cqhttp" ]
