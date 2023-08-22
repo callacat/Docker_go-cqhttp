@@ -35,6 +35,7 @@ ENV GID=100
 ENV UMASK=002
 
 COPY --from=builder /build/cqhttp /app/
+COPY --from=builder /build/docker-entrypoint.sh /
 
 WORKDIR /data
 
